@@ -43,7 +43,7 @@ button {
 }
 
 button:hover {
-    background-color: #fff;
+    background-color: #043b6d;
     transform: scale(1.05); /* Added a common transform value for a slight enlarge effect */
 }
 /* The comment "ВОТ ЭТА ОТКРЫВАЮЩАЯ СКОБКА ОТСУТСТВОВАЛА" was misleading in the provided context,

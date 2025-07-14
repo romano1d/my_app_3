@@ -1,100 +1,71 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const radioPlayer = document.getElementById('radioPlayer');
-    const togglePlayPauseBtn = document.getElementById('togglePlayPause');
+    const togglePlayPauseButton = document.getElementById('togglePlayPause');
     const statusMessage = document.getElementById('statusMessage');
 
-    const radioStreamUrl = 'https://myradio24.org/52340'; // Прямой поток радио
-    radioPlayer.src = radioStreamUrl; // Устанавливаем источник, если он не был установлен в HTML
+    let isPlaying = false; // Отслеживает текущее состояние воспроизведения
 
-    // Функция для обновления статуса
-    function updateStatus(message, isError = false) {
-        statusMessage.textContent = message;
-        statusMessage.style.color = isError ? '#e74c3c' : '#666';
-    }
+    // Инициализация текста кнопки и статуса при загрузке
+    togglePlayPauseButton.textContent = 'Включить радио';
+    statusMessage.textContent = 'Ожидание...';
 
-    // Обработчик кнопки Play/Pause
-    togglePlayPauseBtn.addEventListener('click', () => {
-        if (radioPlayer.paused) {
-            updateStatus('Подключение...');
+    // Обработчик нажатия на кнопку
+    togglePlayPauseButton.addEventListener('click', () => {
+        if (isPlaying) {
+            // Если радио играет, останавливаем его
+            radioPlayer.pause();
+            isPlaying = false;
+            togglePlayPauseButton.textContent = 'Включить радио';
+            statusMessage.textContent = 'Остановлено';
+        } else {
+            // Если радио не играет, пытаемся запустить
+            statusMessage.textContent = 'Загрузка...'; // Показываем статус загрузки
             radioPlayer.play()
                 .then(() => {
-                    togglePlayPauseBtn.textContent = 'Пауза';
-                    updateStatus('Воспроизведение...');
+                    // Успешное воспроизведение
+                    isPlaying = true;
+                    togglePlayPauseButton.textContent = 'Выключить радио';
+                    statusMessage.textContent = 'Играет...';
                 })
                 .catch(error => {
-                    console.error('Ошибка воспроизведения:', error);
-                    updateStatus('Ошибка воспроизведения! ' + error.message, true);
-                    togglePlayPauseBtn.textContent = 'Включить радио';
-                    // Дополнительная проверка на ошибку autoplay policy
-                    if (error.name === "NotAllowedError" || error.name === "AbortError") {
-                        alert("Автоматическое воспроизведение заблокировано браузером. Пожалуйста, взаимодействуйте со страницей, чтобы начать.");
-                    }
+                    // Ошибка воспроизведения (например, из-за политики автовоспроизведения браузера)
+                    isPlaying = false;
+                    togglePlayPauseButton.textContent = 'Включить радио';
+                    statusMessage.textContent = ⓃОшибка: ${error.message}. Нажмите еще раз или измените настройки браузера.Ⓝ;
+                    console.error('Ошибка воспроизведения аудио:', error);
                 });
-        } else {
-            radioPlayer.pause();
-            togglePlayPauseBtn.textContent = 'Включить радио';
-            updateStatus('Остановлено.');
         }
     });
 
-    // Обработчики событий аудио
-    radioPlayer.addEventListener('play', () => {
-        togglePlayPauseBtn.textContent = 'Пауза';
-        updateStatus('Воспроизведение...');
+    // Дополнительные обработчики событий для улучшения UX
+    radioPlayer.addEventListener('waiting', () => {
+        if (isPlaying) { // Показываем "Загрузка..." только если пытаемся воспроизводить
+            statusMessage.textContent = 'Загрузка...';
+        }
+    });
+
+    radioPlayer.addEventListener('playing', () => {
+        isPlaying = true; // Убеждаемся, что состояние корректно
+        togglePlayPauseButton.textContent = 'Выключить радио';
+        statusMessage.textContent = 'Играет...';
     });
 
     radioPlayer.addEventListener('pause', () => {
-        togglePlayPauseBtn.textContent = 'Включить радио';
-        updateStatus('Остановлено.');
+        isPlaying = false; // Убеждаемся, что состояние корректно
+        togglePlayPauseButton.textContent = 'Включить радио';
+        statusMessage.textContent = 'Остановлено';
     });
 
     radioPlayer.addEventListener('error', (e) => {
-        console.error('Ошибка аудио:', e);
-        let errorMessage = 'Неизвестная ошибка аудио.';
-        switch (e.target.error.code) {
-            case e.target.error.MEDIA_ERR_ABORTED:
-                errorMessage = 'Воспроизведение прервано.';
-                break;
-            case e.target.error.MEDIA_ERR_NETWORK:
-                errorMessage = 'Ошибка сети. Проверьте ваше подключение.';
-                break;
-            case e.target.error.MEDIA_ERR_DECODE:
-                errorMessage = 'Ошибка декодирования аудио.';
-                break;
-            case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                errorMessage = 'Источник не поддерживается или не найден.';
-                break;
-        }
-        updateStatus(ⓃОшибка: ${errorMessage}Ⓝ, true);
-        togglePlayPauseBtn.textContent = 'Включить радио';
+        isPlaying = false;
+        togglePlayPauseButton.textContent = 'Включить радио';
+        statusMessage.textContent = ⓃОшибка радио: ${e.message || 'Неизвестная ошибка'}. Попробуйте позже.Ⓝ;
+        console.error('Ошибка аудиоэлемента:', e);
     });
 
-    radioPlayer.addEventListener('waiting', () => {
-        updateStatus('Буферизация...');
-    });
-
-    radioPlayer.addEventListener('stalled', () => {
-        updateStatus('Загрузка прервана...');
-    });
-
-    radioPlayer.addEventListener('ended', () => {
-        updateStatus('Поток завершился. Возможно, радио временно не работает.', true);
-        togglePlayPauseBtn.textContent = 'Включить радио';
-    });
-
-
-    // --- PWA: Регистрация Service Worker ---
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker зарегистрирован:', registration.scope);
-                })
-                .catch(error => {
-                    console.error('Ошибка регистрации Service Worker:', error);
-                });
-        });
-    } else {
-        console.warn('Ваш браузер не поддерживает Service Worker. PWA-функции недоступны.');
-    }
+    // Обработка возможного автовоспроизведения при загрузке страницы (редко, но бывает)
+    // Не рекомендуется пытаться play() на DOMContentLoaded из-за политики автовоспроизведения
+    // Лучше пусть пользователь сам нажмет кнопку.
 });

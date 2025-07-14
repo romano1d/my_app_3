@@ -1,4 +1,6 @@
-body {
+/* style.css */
+
+body { /* ВОТ ЭТА ОТКРЫВАЮЩАЯ СКОБКА ОТСУТСТВОВАЛА */
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -57,10 +59,11 @@ button:active {
     min-height: 20px; /* Чтобы избежать "прыжков" при обновлении текста */
 }
 
-.hint {
+/* Класс .hint был удален из HTML, поэтому его можно удалить и отсюда, если он больше не нужен. */
+/* .hint {
     margin-top: 40px;
     font-size: 0.8em;
     color: #999;
     line-height: 1.5;
     text-align: left;
-}
+} */

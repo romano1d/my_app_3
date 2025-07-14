@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePlayPauseBtn = document.getElementById('togglePlayPause');
     const statusMessage = document.getElementById('statusMessage');
 
-    const radioStreamUrl = 'https - FORBIDDEN - icecast2.myradio24 - FORBIDDEN - /52340/stream_96.aac'; // Прямой поток радио
+    const radioStreamUrl = 'https://myradio24.org/52340'; // Прямой поток радио
     radioPlayer.src = radioStreamUrl; // Устанавливаем источник, если он не был установлен в HTML
 
     // Функция для обновления статуса

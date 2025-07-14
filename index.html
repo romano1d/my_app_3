@@ -2,41 +2,47 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Музыкальный КЛЮЧ</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Подключение манифеста для PWA -->
     <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#007bff">
+    <meta name="theme-color" content="#3498db"> <!-- Цвет темы для браузера -->
+
+    <!-- ⒷⒷ* ДОБАВЬТЕ ЭТИ СТРОКИ ДЛЯ IOS ICON ⒷⒷ* -->
+    <!-- Apple Touch Icon (рекомендуемый размер 180x180 для современных iOS) -->
+    <link rel="apple-touch-icon" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <!-- Дополнительные мета-теги для iOS (опционально, но полезно) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Радио">
+    <!-- ⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷ -->
+
 </head>
 <body>
     <div class="container">
         <h1>Музыкальный КЛЮЧ</h1>
-        
-        <audio id="audioPlayer" preload="auto" crossorigin="anonymous">
-            <source src="https://myradio24.org/52340" type="audio/mpeg"> 
-            Ваш браузер не поддерживает элемент audio.
+
+        <audio id="radioPlayer" preload="auto">
+            <source src="https://myradio24.org/52340" type="audio/aac">
+            Ваш браузер не поддерживает элемент аудио.
         </audio>
 
-        <button id="playPauseButton">Включить Радио</button>
-        <div id="statusMessage">Нажмите "Включить Радио" для начала.</div>
+        <button id="togglePlayPause">Включить радио</button>
+        <p id="statusMessage" class="status">Ожидание...</p>
+
+        <p class="hint">
+            Для добавления на главный экран:
+            <br>
+            В Chrome/Edge: Меню (три точки) &gt; Установить приложение / Добавить на главный экран.
+            <br>
+            В Safari (iOS): Поделиться (квадрат со стрелкой вверх) &gt; На экран "Домой".
+        </p>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker зарегистрирован:', registration);
-                    })
-                    .catch(error => {
-                        console.error('Ошибка регистрации Service Worker:', error);
-                    });
-            });
-        }
-    </script>
 </body>
 </html>

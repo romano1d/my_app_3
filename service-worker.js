@@ -37,7 +37,6 @@ self.addEventListener('activate', event => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        // ИСПРАВЛЕНО ЗДЕСЬ: Используются обратные кавычки (Ⓝ)
                         console.log(ⓃService Worker: Удаляю старый кэш: ${cacheName}Ⓝ);
                         return caches.delete(cacheName);
                     }
@@ -57,21 +56,20 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
 
-    // ВАЖНО: Ниже нужно дописать логику для обработчика 'fetch'.
-    // Пример базовой стратегии "Cache First, then Network":
-    if (urlsToCache.includes(requestUrl.pathname) || requestUrl.origin === location.origin) {
+    const isAssetToCache = urlsToCache.includes(requestUrl.pathname) || 
+                           requestUrl.origin === self.location.origin;
+
+    if (isAssetToCache) {
         event.respondWith(
             caches.match(event.request)
                 .then(response => {
-                    // Возвращаем из кэша, если найдено
                     if (response) {
+                        console.log(ⓃService Worker: Отдаю из кэша: ${requestUrl.pathname}Ⓝ);
                         return response;
                     }
-                    // Иначе, делаем сетевой запрос
+                    console.log(ⓃService Worker: Запрашиваю из сети и кэширую: ${requestUrl.pathname}Ⓝ);
                     return fetch(event.request)
                         .then(networkResponse => {
-                            // Кэшируем новые сетевые ресурсы для последующего использования
-                            // Только если это GET запрос и ответ валиден
                             if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
                                 const responseToCache = networkResponse.clone();
                                 caches.open(CACHE_NAME)
@@ -80,16 +78,14 @@ self.addEventListener('fetch', event => {
                                     });
                             }
                             return networkResponse;
+                        })
+                        .catch(error => {
+                            console.error(ⓃService Worker: Ошибка при запросе ${requestUrl.pathname} из сети:Ⓝ, error);
                         });
-                })
-                .catch(error => {
-                    console.error('Service Worker: Ошибка при обработке fetch:', error);
-                    // Можно вернуть офлайн-страницу или сообщение об ошибке
-                    // return caches.match('/offline.html'); 
                 })
         );
     } else {
-        // Для запросов, которые не должны кэшироваться (например, потоковое аудио или внешние ресурсы)
+        console.log(ⓃService Worker: Запрашиваю из сети напрямую: ${requestUrl.href}Ⓝ);
         event.respondWith(fetch(event.request));
     }
 });

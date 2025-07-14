@@ -9,23 +9,21 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3498db"> <!-- Цвет темы для браузера -->
 
-    <!-- ⒷⒷ* ДОБАВЬТЕ ЭТИ СТРОКИ ДЛЯ IOS ICON ⒷⒷ* -->
-    <!-- Apple Touch Icon (рекомендуемый размер 180x180 для современных iOS) -->
+    <!-- Apple Touch Icon для iOS (обязательно для корректной иконки на iPhone/iPad) -->
     <link rel="apple-touch-icon" href="icons/icon-180x180.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
-    <!-- Дополнительные мета-теги для iOS (опционально, но полезно) -->
+    <!-- Дополнительные мета-теги для iOS (опционально, но полезно для поведения PWA) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Радио">
-    <!-- ⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷⒷ -->
-
 </head>
 <body>
     <div class="container">
         <h1>Музыкальный КЛЮЧ</h1>
 
+        <!-- Аудиоплеер: используем прямой поток -->
         <audio id="radioPlayer" preload="auto">
             <source src="https://myradio24.org/52340" type="audio/aac">
             Ваш браузер не поддерживает элемент аудио.
@@ -34,15 +32,10 @@
         <button id="togglePlayPause">Включить радио</button>
         <p id="statusMessage" class="status">Ожидание...</p>
 
-        <p class="hint">
-            Для добавления на главный экран:
-            <br>
-            В Chrome/Edge: Меню (три точки) &gt; Установить приложение / Добавить на главный экран.
-            <br>
-            В Safari (iOS): Поделиться (квадрат со стрелкой вверх) &gt; На экран "Домой".
-        </p>
+        <!-- Инструкция по установке виджета удалена, как вы и просили -->
     </div>
 
+    <!-- Подключение JavaScript в конце body для лучшей производительности -->
     <script src="script.js"></script>
 </body>
 </html>

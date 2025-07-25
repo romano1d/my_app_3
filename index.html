@@ -5,35 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Музыкальный КЛЮЧ</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+
+    <!-- Главный манифест для PWA (Android, некоторые другие браузеры) -->
+    <link rel="manifest" href="/manifest.json"> <!-- Изменено на абсолютный путь -->
     
-    <!-- Apple Touch Icons для iOS PWA -->
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
-    <!-- Дополнительные мета-теги для iOS (опционально, но полезно для поведения PWA) -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Радио">
+    <!-- Фавикон для вкладок браузера (не для главного экрана телефона) -->
+    <!-- Можно использовать PNG или ICO. PNG сейчас предпочтительнее для большинства современных браузеров. -->
+    <link rel="icon" type="image/png" href="/icons/icon-192x192.png"> <!-- Изменено на абсолютный путь -->
+    
+    <!-- Apple Touch Icons для iOS PWA (иконка на главный экран iPhone/iPad) -->
+    <!-- iOS выбирает наиболее подходящий размер. Можно оставить все, или выбрать основные. -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png"> <!-- Изменено на абсолютный путь -->
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167x167.png"> <!-- Изменено на абсолютный путь -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png"> <!-- Изменено на абсолютный путь -->
+    
+    <!-- Дополнительные мета-теги для iOS (важны для поведения PWA на iOS) -->
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Запускает приложение в полноэкранном режиме Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Стиль строки состояния iOS -->
+    <meta name="apple-mobile-web-app-title" content="Музыкальный КЛЮЧ"> <!-- Название приложения под иконкой на iOS -->
+
+    <!-- Встроенные стили (можно перенести в style.css для чистоты кода) -->
+    <style>
+        .icon {
+            display: inline-block;
+        }
+        #playIcon { display: inline; }
+        #pauseIcon { display: none; }
+
+        #togglePlayPause {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 3em;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+        #togglePlayPause:hover:not(:disabled) {
+            background-color: #217dbb;
+        }
+        #togglePlayPause:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        #togglePlayPause:disabled {
+            background-color: #8bbceb;
+            cursor: not-allowed;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 350px;
+            width: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        #statusMessage {
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
+    <!-- Остальная часть вашего HTML-кода -->
     <div class="container">
         <h1>Музыкальный КЛЮЧ</h1>
-
-        <!-- Аудиоплеер: используем прямой поток -->
-        <audio id="radioPlayer" preload="auto">
-            <source src="https://myradio24.org/52340" type="audio/aac">
-            Ваш браузер не поддерживает элемент аудио.
-        </audio>
-
-        <button id="togglePlayPause">Включить радио</button>
+        <button id="togglePlayPause">
+            <span id="playIcon" class="icon">&#9658;</span>
+            <span id="pauseIcon" class="icon">&#10074;&#10074;</span>
+        </button>
         <p id="statusMessage" class="status">Ожидание...</p>
-
-        <!-- Инструкция по установке виджета удалена, как вы и просили -->
     </div>
-
-    <!-- Подключение JavaScript в конце body для лучшей производительности -->
     <script src="script.js"></script>
 </body>
 </html>

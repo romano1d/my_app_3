@@ -2,35 +2,43 @@
   "name": "Музыкальный КЛЮЧ",
   "short_name": "Музыкальный КЛЮЧ",
   "description": "Слушайте ваше любимое радио прямо с главного экрана!",
-  "start_url": "./index.html",
+  "start_url": "/",              // Изменено на абсолютный путь
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#3498db",
   "icons": [
     {
-      "src": "icons/icon-152x152.png",
+      "src": "/icons/icon-152x152.png", // Изменено на абсолютный путь
       "sizes": "152x152",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-167x167.png",
+      "src": "/icons/icon-167x167.png", // Изменено на абсолютный путь
       "sizes": "167x167",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-180x180.png",
+      "src": "/icons/icon-180x180.png", // Изменено на абсолютный путь
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-192x192.png",
+      "src": "/icons/icon-192x192.png", // Изменено на абсолютный путь
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "/icons/icon-512x512.png", // Изменено на абсолютный путь
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-maskable-192x192.png", // Рекомендовано добавить maskable иконку
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable" // Указываем, что это маскируемая иконка
     }
+    // Можно также добавить иконки других размеров (72x72, 96x96, 128x128, 144x144, 384x384)
+    // для более полной совместимости, но 192x192 и 512x512 являются ключевыми.
   ]
 }
